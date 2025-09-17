@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 def getWeatherFromMars(): # this function gets the data from NASA's restful api
     
     apiKey = os.getenv("NASA_API_KEY")
+    if apiKey is None:
+        raise ValueError("API_KEY is missing, please add your NASA API key as an enviroment variable")
     url = f"https://api.nasa.gov/insight_weather/?api_key={apiKey}&feedtype=json&ver=1.0"
 
     response = requests.get(url) # get the response object
@@ -24,7 +26,6 @@ def parseJsonDataFromFile(filename): # this function reads json data from a spec
     with open(filename + ".json") as file:
         data = json.load(file)
         print(data["sol_keys"])
-        print(json.dumps(data["675"], indent=4))
         
 def day_with_suffix(day): # this function gets a day (e.g 3) and returns a string with its suffix
     if 11 <= day <= 13:
@@ -62,6 +63,8 @@ def plottingTemps(data, availableSols): # this function generates the graph
     plt.xlabel("Sol")
     plt.ylabel("Temperature (°C)")
     plt.title("Mars Atmospheric Temperatures")
+    plt.savefig("mars_weather_plot.png")
+    print("The chart GUI should be shown, if you're running this script on a docker container the chart is saved in a file called 'mars_weather_plot.png'")
     plt.show()
 
 def detailedSol(data, availableSols, solInput): # this function gives you specific details on the selected Sol (mars day)
