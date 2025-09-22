@@ -1,4 +1,11 @@
 def day_with_suffix(day): # this function gets a day (e.g 3) and returns a string with its suffix
+    if not isinstance(day, int):
+        raise ValueError("Day must be an integer")
+    if day <= 0:
+        raise ValueError("Day must be a positive integer and above 0")
+    if day >= 31:
+        raise ValueError("Day must be less than or equal to 31")
+    
     if 11 <= day <= 13:
         return f"{day}th"
     last_digit = day % 10
