@@ -11,5 +11,16 @@ def getWeatherFromMars(): # this function gets the data from NASA's restful api
     response = requests.get(url) # get the response object
 
     if response.status_code == 200: # if i get a successful response
-        data = response.json() # json encode it
-        return data   
+        data = response.json() # decodes the JSON data it into a python dictionary
+        
+        filteredData = {}
+        for key, value in data.items():
+            if key.isdigit():
+                filteredData[key] = value
+            elif key == "sol_keys":
+                filteredData[key] = value
+                
+        if filteredData != {}:
+            return filteredData
+        else:
+            raise ValueError("No data found in the response")
