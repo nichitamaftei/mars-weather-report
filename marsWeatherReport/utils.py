@@ -19,7 +19,7 @@ def day_with_suffix(day): # this function gets a day (e.g 3) and returns a strin
         return f"{day}th"
     
 
-def detailedSol(data, availableSols, solInput): # this function gives you specific details on the selected Sol (mars day)
+def detailedSol(data, solInput): # this function gives you specific details on the selected Sol (mars day)
     
     print(f"SOL {solInput} was chosen.")
     
