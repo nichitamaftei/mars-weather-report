@@ -62,10 +62,12 @@ def jsonValidation(data):
                 "required": ["AT"]
             }
         },
-        "additionalProperties": False  # only keys matching the regex are allowed
+        "additionalProperties": True
     }
 
     try:
         validate(data, mars_schema)
     except ValidationError as e:
         raise ValidationError("Invalid JSON structure")
+    
+    return data
