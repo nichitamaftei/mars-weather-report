@@ -1,3 +1,5 @@
+from jsonschema import validate, ValidationError
+
 def day_with_suffix(day): # this function gets a day (e.g 3) and returns a string with its suffix
     if not isinstance(day, int):
         raise ValueError("Day must be an integer")
@@ -19,7 +21,12 @@ def day_with_suffix(day): # this function gets a day (e.g 3) and returns a strin
         return f"{day}th"
     
 
-def detailedSol(data, availableSols, solInput): # this function gives you specific details on the selected Sol (mars day)
+def detailedSol(data, solInput): # this function gives you specific details on the selected Sol (mars day)
+    
+    listOfKeys = data.keys()
+    
+    if solInput not in listOfKeys:
+        raise KeyError('Sol not found in the Data')
     
     print(f"SOL {solInput} was chosen.")
     
@@ -31,3 +38,36 @@ def detailedSol(data, availableSols, solInput): # this function gives you specif
     
     highestTemp = data[solInput]["AT"]["mx"]
     print(f"Highest temperature recorded: {highestTemp}°C")
+    
+def jsonValidation(data):
+    
+    mars_schema = {
+        "type": "object",
+        "minProperties": 1,
+        "patternProperties": {  # any key that matches the regex
+            "^[0-9]+$": {  # keys like "671", "672", etc.
+                "type": "object",
+                "properties": {
+                    "AT": {
+                        "type": "object",
+                        "properties": {
+                            "av": {"type": "number"},
+                            "ct": {"type": "number"},
+                            "mn": {"type": "number"},
+                            "mx": {"type": "number"},
+                        },
+                        "required": ["av", "ct", "mn", "mx"]
+                    }
+                },
+                "required": ["AT"]
+            }
+        },
+        "additionalProperties": True
+    }
+
+    try:
+        validate(data, mars_schema)
+    except ValidationError as e:
+        raise ValidationError("Invalid JSON structure")
+    
+    return data
