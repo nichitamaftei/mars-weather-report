@@ -30,7 +30,7 @@ jobs:
 
     # run unit tests using pytest inside the service container
     - name: Run unit tests inside container
-      run: docker compose run --rm mars-weather-report pytest tests/unit
+      run: docker compose run --rm --user root mars-weather-report pytest tests/unit
 
   integration:
     # os of the runner
