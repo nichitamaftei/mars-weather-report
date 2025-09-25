@@ -11,6 +11,7 @@
 version: '3.1'
 services:
   mars-weather-report:
+    image: mars-weather-report
     build: .
     volumes:
       - .:/app        # mounts my current project into /app in the container
