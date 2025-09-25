@@ -3,6 +3,7 @@ from unittest.mock import patch
 from tests.conftest import jsonSampleData
 import matplotlib
 import pytest
+import tempfile
 
 # ----------------------------
 # Happy PATH: invalid json data
@@ -11,6 +12,8 @@ import pytest
 def test_generatingGraph_happy(mock_show):
     
     fig = plottingTemps(jsonSampleData("2", -54, -92, 2), ["2"])
+    fig.savefig(tempfile.mktemp(suffix=".png"))
+    
     mock_show.assert_called_once()
     assert isinstance(fig, matplotlib.figure.Figure)
 
