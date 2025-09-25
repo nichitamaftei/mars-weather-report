@@ -4,3 +4,4 @@ pytest
 pytest-cov
 jsonschema
 python-dotenv
+flake8
