@@ -42,7 +42,7 @@ def test_getWeatherFromMars_emptyAPI_failure(mock_getenv):
 
     with pytest.raises(ValueError) as exp:
         getWeatherFromMars()
-    assert str(exp.value) == "API_KEY is missing, please add your NASA API key as an environment variable  or in a .env file"
+    assert str(exp.value) == 'API_KEY is missing, please add your NASA API key as an environment variable or in a .env file'
     
 
 @pytest.mark.parametrize("effect, expectedErrorMessage, statusCode",[

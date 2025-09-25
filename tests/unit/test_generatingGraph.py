@@ -1,6 +1,6 @@
 from marsWeatherReport import plottingTemps
-from conftest import jsonSampleData
 from unittest.mock import patch
+from tests.conftest import jsonSampleData
 import matplotlib
 import pytest
 

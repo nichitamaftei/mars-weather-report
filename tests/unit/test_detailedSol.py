@@ -1,5 +1,5 @@
 from marsWeatherReport import detailedSol
-from conftest import jsonSampleData
+from tests.conftest import jsonSampleData
 import pytest
 
 # ----------------------------
