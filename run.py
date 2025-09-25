@@ -5,11 +5,11 @@ from datetime import datetime
 def main(): # this function is the first to run
     print("Welcome to the Mars Weather Tracking application! \nBelow is a list of available Sol's containing data")
     
-    data = getWeatherFromMars()
+    data = getWeatherFromMars() # gets data from NASA's API
     
-    validatedData = jsonValidation(data)
+    validatedData = jsonValidation(data) # ensures the json structure is compliant with the schema expected
     
-    availableSols = validatedData["sol_keys"]
+    availableSols = validatedData["sol_keys"] # gets back a list of available mars days containing data
 
     for sol in availableSols: # spits out a list of all the available Sols
         dt = datetime.strptime(validatedData[sol]['First_UTC'], "%Y-%m-%dT%H:%M:%SZ")
