@@ -14,7 +14,6 @@ import pytest
 def test_detailedSol_invalidJSONStructure_happy(goodJsonStructure):
     assert jsonValidation(goodJsonStructure) == goodJsonStructure
 
-
 # ----------------------------
 # Sad PATH: invalid json data
 # ----------------------------

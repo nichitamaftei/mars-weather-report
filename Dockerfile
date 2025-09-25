@@ -52,4 +52,4 @@ RUN mkdir -p /app/.matplotlib && chown -R appuser:appuser /app/.matplotlib
 USER appuser
 
 # Run the application.
-CMD python marsWeatherReport.py
+CMD ["python", "run.py"]
