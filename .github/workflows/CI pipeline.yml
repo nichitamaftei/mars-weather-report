@@ -16,24 +16,22 @@ jobs:
   linting-unit:
     # os of the runner
     runs-on: ubuntu-latest
-    env:
-      NASA_API_KEY: ${{secrets.NASA_API_KEY}}
 
     steps:
     # takes the code from the repo
     - uses: actions/checkout@v4
 
-    # build the docker image using the docker-compose.yml file
-    - name: Build Docker images
-      run: docker compose build
-
-    # run flake8 (linting) inside the service container
-    - name: Lint inside container
-      run: docker compose run --rm mars-weather-report flake8 . --exit-zero
-
-    # run unit tests using pytest inside the service container
-    - name: Run unit tests inside container
-      run: docker compose run --rm --user root mars-weather-report pytest tests/unit
+    # build the Docker image from the Dockerfile and call it mars-weather-report
+    - name: build the Docker image 
+      run: docker build -t mars-weather-report .
+    
+    # run flake8 (linting) inside the container
+    - name: lint inside container
+      run: docker run --rm mars-weather-report flake8 . --exit-zero
+    
+    # run unit tests using pytest inside the container
+    - name: run unit tests inside container
+      run: docker run --rm mars-weather-report pytest tests/unit
 
   integration:
     # os of the runner
@@ -48,10 +46,10 @@ jobs:
     # takes the code from the repo
     - uses: actions/checkout@v4
 
-    # build the docker image using the docker-compose.yml file
-    - name: build the Docker images
-      run: docker compose build
-
-    # run integration tests using pytest inside the service container
-    - name: Run integration tests inside container
-      run: docker compose run --rm --user root mars-weather-report pytest tests/integration
+    # build the Docker image from the Dockerfile and call it mars-weather-report
+    - name: build the Docker image
+      run: docker build -t mars-weather-report .
+    
+    # run integration tests using pytest inside the container
+    - name: run integration tests inside container
+      run: docker run --rm mars-weather-report pytest tests/integration
