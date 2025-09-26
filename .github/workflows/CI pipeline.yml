@@ -1,0 +1,55 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: CI pipeline
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  linting-unit:
+    # os of the runner
+    runs-on: ubuntu-latest
+
+    steps:
+    # takes the code from the repo
+    - uses: actions/checkout@v4
+
+    # build the Docker image from the Dockerfile and call it mars-weather-report
+    - name: build the Docker image 
+      run: docker build -t mars-weather-report .
+    
+    # run flake8 (linting) inside the container
+    - name: lint inside container
+      run: docker run --rm mars-weather-report flake8 . --exit-zero
+    
+    # run unit tests using pytest inside the container
+    - name: run unit tests inside container
+      run: docker run --rm mars-weather-report pytest tests/unit
+
+  integration:
+    # os of the runner
+    runs-on: ubuntu-latest
+    # sets the api key into the enviroment from this repo's secrets
+    env:
+      NASA_API_KEY: ${{secrets.NASA_API_KEY}}
+    # this job depends on the previous job (linting-unit)
+    needs: linting-unit
+    
+    steps:
+    # takes the code from the repo
+    - uses: actions/checkout@v4
+
+    # build the Docker image from the Dockerfile and call it mars-weather-report
+    - name: build the Docker image
+      run: docker build -t mars-weather-report .
+    
+    # run integration tests using pytest inside the container
+    - name: run integration tests inside container
+      run: docker run --rm mars-weather-report pytest tests/integration
