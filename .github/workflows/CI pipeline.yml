@@ -44,6 +44,10 @@ jobs:
   integration:
     # os of the runner
     runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      
     # sets the api key into the enviroment from this repo's secrets
     env:
       NASA_API_KEY: ${{secrets.NASA_API_KEY}}
