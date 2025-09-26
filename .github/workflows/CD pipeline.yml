@@ -10,10 +10,13 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
+      # gets/checksout the code from the repo
+      - uses: actions/checkout@v4
+
       - name: log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: build and push my Docker image
         run: |
-          docker build -t 0xnickm/mars-weather-report:${{ github.sha }} .
-          docker push 0xnickm/mars-weather-report:${{ github.sha }}
+          docker build -t "${{ secrets.DOCKER_USERNAME }}"/mars-weather-report:${{ github.sha }} .
+          docker push "${{ secrets.DOCKER_USERNAME }}"/mars-weather-report:${{ github.sha }}
