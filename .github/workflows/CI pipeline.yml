@@ -38,6 +38,8 @@ jobs:
       if: success() || failure()
       with:
         report_paths: 'reports/Unit_Test-results.xml'
+        detailed_summary: true
+        include_passed: true
 
   integration:
     # os of the runner
@@ -55,7 +57,17 @@ jobs:
     # build the Docker image from the Dockerfile and call it mars-weather-report
     - name: build the Docker image
       run: docker build -t mars-weather-report .
-    
+
     # run integration tests using pytest inside the container
-    - name: run integration tests inside container
-      run: docker run --rm mars-weather-report pytest tests/integration
+    - name: run unit tests inside container and generate JUnit report
+      run: |
+        mkdir -p reports
+        docker run --rm -u root -v ${{ github.workspace }}/reports:/app/reports mars-weather-report pytest -v tests/integration --junitxml=/app/reports/Integration_Test-results.xml
+  
+    - name: publish Integration Tests Report
+      uses: mikepenz/action-junit-report@v5
+      if: success() || failure()
+      with:
+        report_paths: 'reports/Integration_Test-results.xml'
+        detailed_summary: true
+        include_passed: true
