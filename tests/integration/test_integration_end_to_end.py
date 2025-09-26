@@ -8,13 +8,17 @@ import requests
 # HAPPY PATH: valid workflow
 # ----------------------------
 
+@patch("marsWeatherReport.api.os.getenv")
 @patch("marsWeatherReport.api.requests.get")
 @patch("matplotlib.pyplot.show")
 @pytest.mark.parametrize("goodJsonStructure, selectedSol", [
     ({"671": {"AT": {"av": -54,"ct": 177556,"mn": -90,"mx": -2}}, "sol_keys": ["671"]}, "671"), # just one value
     ({"671": {"AT": {"av": -54,"ct": 177556,"mn": -90,"mx": -2}}, "672": {"AT": {"av": -52,"ct": 177556,"mn": -93,"mx": -6}}, "sol_keys": ["671", "672"]}, "671")  # two values
 ])
-def test_integration_end_to_end_solDetail_happy(mock_show, mock_get, goodJsonStructure, selectedSol, capsys):
+def test_integration_end_to_end_solDetail_happy(mock_show, mock_get, mock_getenv, goodJsonStructure, selectedSol, capsys):
+    
+    # provide a fake API key
+    mock_getenv.return_value = "fake_key"
     
     mock_resp = Mock()
     mock_resp.status_code = 200
@@ -38,14 +42,18 @@ def test_integration_end_to_end_solDetail_happy(mock_show, mock_get, goodJsonStr
     assert f"Lowest temperature recorded: {mn}°C" in captured.out
     assert f"Highest temperature recorded: {mx}°C" in captured.out
     
-    
+@patch("marsWeatherReport.api.os.getenv")
 @patch("matplotlib.pyplot.show")
 @patch("marsWeatherReport.api.requests.get")
 @pytest.mark.parametrize("goodJsonStructure", [
     {"671": {"AT": {"av": -54,"ct": 177556,"mn": -90,"mx": -2}}, "sol_keys": ["671"]},
     {"671": {"AT": {"av": -54,"ct": 177556,"mn": -90,"mx": -2}}, "672": {"AT": {"av": -52,"ct": 177556,"mn": -93,"mx": -6}}, "sol_keys": ["671", "672"]}
 ])
-def test_integration_end_to_end_graph_happy(mock_get, mock_show, goodJsonStructure):
+def test_integration_end_to_end_graph_happy(mock_get, mock_show, mock_getenv, goodJsonStructure):
+    
+    # provide a fake API key
+    mock_getenv.return_value = "fake_key"
+    
     mock_resp = Mock()
     mock_resp.status_code = 200
     mock_resp.json = Mock(return_value=goodJsonStructure)

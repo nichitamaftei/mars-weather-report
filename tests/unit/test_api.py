@@ -7,8 +7,13 @@ import requests
 # HAPPY PATH: valid day numbers
 # ----------------------------
 
+@patch("marsWeatherReport.api.os.getenv")
 @patch("marsWeatherReport.api.requests.get")
-def test_getWeatherFromMars_success(mock_get):
+def test_getWeatherFromMars_success(mock_get, mock_getenv):
+    
+    # provide a fake API key
+    mock_getenv.return_value = "fake_key"
+    
     # fake API response
     mock_response = {
         "1000": {
@@ -54,8 +59,13 @@ def test_getWeatherFromMars_emptyAPI_failure(mock_getenv):
         (None, "HTTP error 399", 399),
     ]
 )
+
+@patch("marsWeatherReport.api.os.getenv")
 @patch("marsWeatherReport.api.requests.get")
-def test_getWeatherFromMars_timeout_failure(mock_get, effect, expectedErrorMessage, statusCode):
+def test_getWeatherFromMars_timeout_failure(mock_get, mock_getenv, effect, expectedErrorMessage, statusCode):
+    
+    # provide a fake API key
+    mock_getenv.return_value = "fake_key"
     
     if effect is not None:
         mock_get.side_effect = effect

@@ -3,22 +3,14 @@ from unittest.mock import patch
 from tests.conftest import jsonSampleData
 import matplotlib
 import pytest
-import tempfile
-import os
 
 # ----------------------------
 # Happy PATH: invalid json data
 # ----------------------------
-
-matplotlib.rcParams['savefig.directory'] = '/tmp'
-os.environ['MPLCONFIGDIR'] = '/tmp'  # for font cache
-
 @patch("matplotlib.pyplot.show")
 def test_generatingGraph_happy(mock_show):
     
     fig = plottingTemps(jsonSampleData("2", -54, -92, 2), ["2"])
-    fig.savefig(os.path.join(tempfile.gettempdir(), "mars_weather_plot.png"))
-    
     mock_show.assert_called_once()
     assert isinstance(fig, matplotlib.figure.Figure)
 
