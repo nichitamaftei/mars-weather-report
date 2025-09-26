@@ -15,5 +15,5 @@ jobs:
 
       - name: build and push my Docker image
         run: |
-          docker build -t myuser/mars-weather-report:${{ github.sha }} .
-          docker push myuser/mars-weather-report:${{ github.sha }}
+          docker build -t 0xnickm/mars-weather-report:${{ github.sha }} .
+          docker push 0xnickm/mars-weather-report:${{ github.sha }}
