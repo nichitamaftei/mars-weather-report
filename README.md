@@ -15,7 +15,7 @@ This project was built to practise Python scripting, file handling, API requests
 ---
 
 ## Requirements:
-- requests & matplotlib - These python libraries are REQUIRED to be installed
+- requests, matplotlib, jsonschema & python-dotenv - These python libraries are REQUIRED to be installed
 - Generate your private API key through NASA: (https://api.nasa.gov/)
 - Add it to your enviroment by typing the command in your terminal in the directory of this folder: `export NASA_API_KEY="YOUR_API_KEY_HERE"` or creating a .env file in the projects directory
 
