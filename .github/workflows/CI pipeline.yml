@@ -48,9 +48,6 @@ jobs:
     permissions:
       checks: write
       
-    # sets the api key into the enviroment from this repo's secrets
-    env:
-      NASA_API_KEY: ${{secrets.NASA_API_KEY}}
     # this job depends on the previous job (linting-unit)
     needs: linting-unit
     
